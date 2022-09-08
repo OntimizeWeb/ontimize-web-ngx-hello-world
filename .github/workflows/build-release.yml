@@ -4,14 +4,14 @@ name: Build Release
 on:
   pull_request:
     types: [closed]
-    branches: [master]
+    branches: [main]
     paths: ['projects/ontimize-web-ngx-hello-world/**']
   workflow_dispatch:
     inputs:
       BASELINE:
         description: 'Release branch'
         required: true
-        default: 'master'
+        default: 'main'
       RELEASE_LABELS:
         description: 'Release type (comma separated list)'
         required: true
