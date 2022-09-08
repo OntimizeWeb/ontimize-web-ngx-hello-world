@@ -1,0 +1,29 @@
+<div class="o-gallery-thumbnails-wrapper o-gallery-thumbnail-size-{{size}}">
+  <div class="o-gallery-thumbnails" [style.transform]="'translateX(' + thumbnailsLeft + ')'" [style.marginLeft]="thumbnailsMarginLeft">
+    <div *ngFor="let image of images; let i = index;">
+      <a [href]="hasLink(i) ? links[i] : '#'" [target]="linkTarget" class="o-gallery-thumbnail" [style.width]="thumbnailWidth"
+        (click)="handleClick($event, i)" [style.height]="thumbnailHeight" [style.left]="getThumbnailLeft(i)" [style.top]="getThumbnailTop(i)"
+        [ngClass]="{ 'o-gallery-active': i == selectedIndex, 'o-gallery-clickable': clickable }" [attr.aria-label]="labels[i]">
+        <div *ngIf="getFileType(image) == 'image'" [oGalleryBackgroundImg]="image" class="o-gallery-thumbnail"
+          [ngClass]="{ 'o-gallery-active': i == selectedIndex, 'o-gallery-clickable': clickable }"
+          style="width: 100%; height: 100%; position:absolute;"></div>
+        <video *ngIf="getFileType(image) == 'video'" class="o-gallery-thumbnail"
+          [ngClass]="{ 'o-gallery-active': i == selectedIndex, 'o-gallery-clickable': clickable }"
+          style="width: 100%; height: 100%; position:absolute;">
+          <source [src]="image">
+          Your browser does not support the video tag.
+        </video>
+        <div class="o-gallery-icons-wrapper">
+          <o-gallery-action *ngFor="let action of actions" [icon]="action.icon" [disabled]="action.disabled" [titleText]="action.titleText"
+            (onClick)="action.onClick($event, i)"></o-gallery-action>
+        </div>
+        <div class="o-gallery-remaining-count-overlay" *ngIf="remainingCount && remainingCountValue && (i == (rows * columns) - 1)">
+          <span class="o-gallery-remaining-count">+{{remainingCountValue}}</span>
+        </div>
+      </a>
+    </div>
+  </div>
+</div>
+
+<o-gallery-arrows *ngIf="canShowArrows" (onPrevClick)="moveLeft()" (onNextClick)="moveRight()" [prev-disabled]="!canMoveLeft"
+  [next-disabled]="!canMoveRight" [arrow-prev-icon]="arrowPrevIcon" [arrow-next-icon]="arrowNextIcon"></o-gallery-arrows>

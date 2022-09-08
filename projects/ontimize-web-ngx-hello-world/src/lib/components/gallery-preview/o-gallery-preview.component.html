@@ -1,0 +1,37 @@
+<o-gallery-arrows *ngIf="arrows" (onPrevClick)="showPrev()" (onNextClick)="showNext()" [prev-disabled]="!canShowPrev" [next-disabled]="!canShowNext"
+  [arrow-prev-icon]="arrowPrevIcon" [arrow-next-icon]="arrowNextIcon"></o-gallery-arrows>
+
+<div class="o-gallery-preview-top">
+  <div class="o-gallery-preview-icons">
+    <o-gallery-action *ngFor="let action of actions" [icon]="action.icon" [disabled]="action.disabled" [titleText]="action.titleText"
+      (onClick)="action.onClick($event, index)"></o-gallery-action>
+    <a *ngIf="download && src" [href]="src" class="o-gallery-icon" aria-hidden="true" download>
+      <em class="o-gallery-icon-content">{{ downloadIcon }}</em>
+    </a>
+    <o-gallery-action *ngIf="zoom" [icon]="zoomOutIcon" [disabled]="!canZoomOut" (onClick)="zoomOut()"></o-gallery-action>
+    <o-gallery-action *ngIf="zoom" [icon]="zoomInIcon" [disabled]="!canZoomIn" (onClick)="zoomIn()"></o-gallery-action>
+    <o-gallery-action *ngIf="rotate" [icon]="rotateLeftIcon" (onClick)="rotateLeft()"></o-gallery-action>
+    <o-gallery-action *ngIf="rotate" [icon]="rotateRightIcon" (onClick)="rotateRight()"></o-gallery-action>
+    <o-gallery-action *ngIf="fullscreen" [icon]="fullscreenIcon" (onClick)="manageFullscreen()"></o-gallery-action>
+    <o-gallery-action [icon]="closeIcon" (onClick)="close()"></o-gallery-action>
+  </div>
+</div>
+<div class="ngx-spinner-wrapper o-gallery-center" [class.o-gallery-active]="showSpinner">
+  <i class="o-gallery-icon o-gallery-spinner" aria-hidden="true">{{spinnerIcon}}</i>
+</div>
+<div class="o-gallery-preview-wrapper" (click)="closeOnClick && close()" (mouseup)="mouseUpHandler($event)" (mousemove)="mouseMoveHandler($event)"
+  (touchend)="mouseUpHandler($event)" (touchmove)="mouseMoveHandler($event)">
+  <div class="o-gallery-preview-img-wrapper">
+    <img alt="previewImage" *ngIf="src && type === 'image'" #previewImage class="o-gallery-preview-img o-gallery-center" [src]="src" (click)="$event.stopPropagation()"
+      (mouseenter)="imageMouseEnter()" (mouseleave)="imageMouseLeave()" (mousedown)="mouseDownHandler($event)" (touchstart)="mouseDownHandler($event)"
+      [class.o-gallery-active]="!loading" [class.animation]="animation" [class.o-gallery-grab]="canDragOnZoom" [style.transform]="getTransform"
+      [style.left]="positionLeft + 'px'" [style.top]="positionTop + 'px'" />
+    <video *ngIf="src && type === 'video'" #previewImage class="o-gallery-preview-video o-gallery-center" controls style="width: 50%; height: 50%;">
+      <source [src]="src">
+      Your browser does not support the video tag.
+    </video>
+    <o-gallery-bullets *ngIf="bullets" [count]="images.length" [active]="index" (onChange)="showAtIndex($event)">
+    </o-gallery-bullets>
+  </div>
+  <div class="o-gallery-preview-text" *ngIf="showDescription && description" [innerHTML]="description" (click)="$event.stopPropagation()"></div>
+</div>

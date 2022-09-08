@@ -1,0 +1,35 @@
+.o-gallery-arrow-wrapper {
+  position: absolute;
+  height: 100%;
+  width: 1px;
+  display: table;
+  z-index: 2000;
+  table-layout: fixed;
+}
+
+.o-gallery-arrow {
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+
+  &.o-gallery-disabled {
+    opacity: .6;
+    cursor: default;
+  }
+}
+
+.o-gallery-arrow-left {
+  left: 0;
+
+  .o-gallery-arrow {
+    left: 10px;
+  }
+}
+
+.o-gallery-arrow-right {
+  right: 0;
+
+  .o-gallery-arrow {
+    right: 10px;
+  }
+}

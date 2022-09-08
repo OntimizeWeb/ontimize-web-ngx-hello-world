@@ -1,0 +1,34 @@
+<div class="o-gallery-image-wrapper o-gallery-animation-{{animation}} o-gallery-image-size-{{size}}">
+  <div *ngFor="let image of images; let i = index;">
+    <div *ngIf="image.type === 'image' || image.type === 'unknown'" [oGalleryBackgroundImg]="image.src" class="o-gallery-image"
+      [ngClass]="{ 'o-gallery-active': selectedIndex == image.index, 'o-gallery-inactive-left': selectedIndex > image.index, 'o-gallery-inactive-right': selectedIndex < image.index, 'o-gallery-clickable': clickable }"
+      (click)="handleClick($event, image.index)">
+      <div class="o-gallery-icons-wrapper">
+        <o-gallery-action *ngFor="let action of actions" [icon]="action.icon" [disabled]="action.disabled" [titleText]="action.titleText"
+          (onClick)="action.onClick($event, image.index)"></o-gallery-action>
+      </div>
+      <div class="o-gallery-image-text" *ngIf="showDescription && descriptions[image.index]" [innerHTML]="descriptions[image.index]"
+        (click)="$event.stopPropagation()"></div>
+    </div>
+    <div *ngIf="image.type === 'video'" class="o-gallery-image"
+      [ngClass]="{ 'o-gallery-active': selectedIndex == image.index, 'o-gallery-inactive-left': selectedIndex > image.index, 'o-gallery-inactive-right': selectedIndex < image.index, 'o-gallery-clickable': clickable }"
+      (click)="handleClick($event, image.index)">
+      <video controls style="width: 100%; height: 100%;">
+        <source [src]="image.src">
+        Your browser does not support the video tag.
+      </video>
+      <div class="o-gallery-icons-wrapper">
+        <o-gallery-action *ngFor="let action of actions" [icon]="action.icon" [disabled]="action.disabled" [titleText]="action.titleText"
+          (onClick)="action.onClick($event, image.index)"></o-gallery-action>
+      </div>
+      <div class="o-gallery-image-text" *ngIf="showDescription && descriptions[image.index]" [innerHTML]="descriptions[image.index]"
+        (click)="$event.stopPropagation()"></div>
+    </div>
+  </div>
+</div>
+
+<o-gallery-bullets *ngIf="bullets" [count]="images.length" [active]="selectedIndex" (onChange)="show($event)"></o-gallery-bullets>
+
+<o-gallery-arrows class="o-gallery-image-size-{{size}}" *ngIf="arrows" (onPrevClick)="showPrev()" (onNextClick)="showNext()"
+  [prev-disabled]="!canShowPrev" [next-disabled]="!canShowNext" [arrow-prev-icon]="arrowPrevIcon" [arrow-next-icon]="arrowNextIcon">
+</o-gallery-arrows>

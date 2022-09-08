@@ -1,0 +1,2 @@
+<div class="o-gallery-bullet" *ngFor="let bullet of [count]; let i = index;" (click)="handleChange($event, i)"
+  [ngClass]="{ 'o-gallery-active': i == active }"></div>
