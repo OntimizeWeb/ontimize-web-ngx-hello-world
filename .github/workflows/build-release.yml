@@ -77,7 +77,7 @@ jobs:
       - name: GitHub Release / Create release
         uses: actions/create-release@v1.1.4
         env:
-          GITHUB_TOKEN: ${{ secrets.OWEB_GH_TOKEN_PUSH }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: ${{ steps.project.outputs.version }}
           release_name: ${{ steps.project.outputs.version }}
