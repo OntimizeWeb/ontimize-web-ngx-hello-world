@@ -68,13 +68,10 @@ jobs:
           npm i
           npm run build
 
-      - name: configure npmrc
-        run: |
-          echo "//registry.npmjs.org/:_authToken=${{ secrets.OWEB_NPM_AUTOMATION_TOKEN }}" >> .npmrc
-
       - name: Publish
         run: |
           cd dist
+          echo "//registry.npmjs.org/:_authToken=${{ secrets.OWEB_NPM_AUTOMATION_TOKEN }}" >> .npmrc
           npm publish
 
       - name: GitHub Release / Create release
