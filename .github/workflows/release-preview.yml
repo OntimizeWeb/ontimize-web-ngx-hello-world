@@ -1,0 +1,87 @@
+---
+name: Release Preview
+
+concurrency:
+  group: release-preview
+  cancel-in-progress: true
+
+on:
+  pull_request:
+    types: [labeled, synchronize]
+    branches: ['main', 'main.*']
+    paths: ['projects/ontimize-web-ngx-hello-world/**']
+
+env:
+  WORKFLOW_VERSION: 1.54.0
+  GITHUB_REGISTRY: ghcr.io
+  CHANGELOG_DRAFTER_IMAGE_NAME: inditex/ci-agents/changelog-drafter
+  CHANGELOG_DRAFTER_IMAGE_TAG: 2.19.3-node-12-ubuntu-r0
+  SCM_TOKEN: ${{ secrets.GH_TOKEN_PUSH }}
+  PR_HEAD_REF: ${{ github.head_ref }}
+
+jobs:
+  release-preview:
+    name: Release Preview
+    if: contains(join(github.event.pull_request.labels.*.name, ', '), 'release')
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout merge commit
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Node 12.x
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12.13.0
+          registry-url: ${{ env.NPM_REGISTRY }}
+
+      - name: obtain package.json version
+        id: project
+        run: |
+          echo ::set-output name=version::$(node -pe "require('./package.json')['version']")
+          echo "RELEASE_VERSION=$(node -pe "require('./package.json')['version']")" >> $GITHUB_ENV
+
+      - name: abort if SNAPSHOT
+        if: "contains(steps.project.outputs.version, 'SNAPSHOT')"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          FAILURE_MESSAGE="Your release version **is an SNAPSHOT and it needs to be fixed to make a release!**"
+          gh pr comment ${{ github.event.number }} --body "
+          ### :exclamation: :exclamation: :exclamation: Release Preview Failure
+          The release version detected was:
+          $RELEASE_VERSION
+
+          ### 💡 Required work to continue with the release
+          $FAILURE_MESSAGE
+          "
+          exit 1
+
+      - name: npm install and npm run build
+        run: |
+          npm i
+          npm run build
+
+      - name: Show error on console - On Failure
+        if: failure()
+        run: |
+          gh pr comment ${{ github.event.number }} --body "
+          ### :exclamation: :exclamation: :exclamation: Release Preview Failure
+          The build has failed
+          "
+
+      - name: Add PR comment with release preview
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          MESSAGE="
+          ### :rocket: Release Preview Success
+          You are going to release the version **$RELEASE_VERSION**!!
+
+          ### 💡 Merge Strategy: Create a merge commit
+          "
+          gh pr comment ${{ github.event.number }} --body "$(echo -e "$MESSAGE")"
+
+
