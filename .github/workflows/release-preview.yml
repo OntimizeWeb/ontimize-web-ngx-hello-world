@@ -40,31 +40,27 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          FAILURE_MESSAGE="Your release version **is an SNAPSHOT and it needs to be fixed to make a release!**"
-          gh pr comment ${{ github.event.number }} --body "
-          ### :exclamation: :exclamation: :exclamation: Release Preview Failure
-          The release version detected was:
-          $RELEASE_VERSION
-
-          ### 💡 Required work to continue with the release
-          $FAILURE_MESSAGE
-          "
+          echo "FAILURE_MESSAGE=Your release version **is an SNAPSHOT and it needs to be fixed to make a release!**
+          The release version detected was: $RELEASE_VERSION" >> $GITHUB_ENV
           exit 1
 
       - name: npm install and npm run build
         run: |
           npm i
-          npm run build
+          npm run build >> stdout.log 2>> error.log
 
-      - name: Show error on console - On Failure
-        if: failure()
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          gh pr comment ${{ github.event.number }} --body "
-          ### :exclamation: :exclamation: :exclamation: Release Preview Failure
-          The build has failed
-          "
+          ERROR_FILE="error.log"
+          if [ -f "$ERROR_FILE" ]; then
+            MESSAGE+="> **Build error**\n"
+            MESSAGE+="> Some errors have been detected whilst building\n"
+            MESSAGE+="> \`\`\`\n"
+            while read -r line; do
+              MESSAGE+="> $line\n"
+            done < "$ERROR_FILE"
+            MESSAGE+="> \`\`\`\n"
+
+            echo "FAILURE_MESSAGE=$MESSAGE" >> $GITHUB_ENV
+          fi
 
       - name: Add PR comment with release preview
         env:
@@ -77,5 +73,18 @@ jobs:
           ### 💡 Merge Strategy: Create a merge commit
           "
           gh pr comment ${{ github.event.number }} --body "$(echo -e "$MESSAGE")"
+
+      - name: Add PR comment on Failure
+        if: failure()
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh pr comment ${{ github.event.number }} --body "
+          ### :exclamation: :exclamation: :exclamation: Release Preview Failure
+          There has been an error whilst checking requirements for release version.
+
+          ### 💡 Required work to continue with the release
+          $FAILURE_MESSAGE
+          "
 
 
