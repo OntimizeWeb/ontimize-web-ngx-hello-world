@@ -49,6 +49,7 @@ jobs:
           npm i  > stdout.log 2> error.log
           npm run build > stdout.log 2> error.log
 
+          cat error.log
           MESSAGE="The build process has failed with the following error:
           \`\`\`
           $(cat error.log)
