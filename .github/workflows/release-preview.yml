@@ -47,20 +47,19 @@ jobs:
       - name: npm install and npm run build
         run: |
           npm i
-          npm run build >> stdout.log 2>> error.log
+          npm run build > ./stdout.log 2> ./error.log
 
-          ERROR_FILE="error.log"
+          MESSAGE="**Build error**\n"
+          ERROR_FILE="./error.log"
           if [ -f "$ERROR_FILE" ]; then
-            MESSAGE+="> **Build error**\n"
             MESSAGE+="> Some errors have been detected whilst building\n"
             MESSAGE+="> \`\`\`\n"
             while read -r line; do
               MESSAGE+="> $line\n"
             done < "$ERROR_FILE"
             MESSAGE+="> \`\`\`\n"
-
-            echo "FAILURE_MESSAGE=$MESSAGE" >> $GITHUB_ENV
           fi
+          echo "FAILURE_MESSAGE=$MESSAGE" >> $GITHUB_ENV
 
       - name: Add PR comment with release preview
         env:
