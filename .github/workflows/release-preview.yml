@@ -46,11 +46,11 @@ jobs:
 
       - name: npm install and npm run build
         run: |
-          npm i
-          npm run build > ./stdout.log 2> ./error.log
+          npm i  > stdout.log 2> error.log
+          npm run build > stdout.log 2> error.log
 
           MESSAGE="**Build error**\n"
-          ERROR_FILE="./error.log"
+          ERROR_FILE="error.log"
           if [ -f "$ERROR_FILE" ]; then
             MESSAGE+="> Some errors have been detected whilst building\n"
             MESSAGE+="> \`\`\`\n"
