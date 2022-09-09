@@ -11,14 +11,6 @@ on:
     branches: ['main', 'main.*']
     paths: ['projects/ontimize-web-ngx-hello-world/**']
 
-env:
-  WORKFLOW_VERSION: 1.54.0
-  GITHUB_REGISTRY: ghcr.io
-  CHANGELOG_DRAFTER_IMAGE_NAME: inditex/ci-agents/changelog-drafter
-  CHANGELOG_DRAFTER_IMAGE_TAG: 2.19.3-node-12-ubuntu-r0
-  SCM_TOKEN: ${{ secrets.GH_TOKEN_PUSH }}
-  PR_HEAD_REF: ${{ github.head_ref }}
-
 jobs:
   release-preview:
     name: Release Preview
@@ -66,6 +58,8 @@ jobs:
 
       - name: Show error on console - On Failure
         if: failure()
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           gh pr comment ${{ github.event.number }} --body "
           ### :exclamation: :exclamation: :exclamation: Release Preview Failure
