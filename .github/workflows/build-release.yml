@@ -12,10 +12,6 @@ on:
         description: 'Release branch'
         required: true
         default: 'main'
-      RELEASE_LABELS:
-        description: 'Release type (comma separated list)'
-        required: true
-        default: 'release-type/current'
 
 env:
   NPM_REGISTRY: https://registry.npmjs.org/
@@ -23,12 +19,11 @@ env:
 jobs:
   build:
     runs-on: ubuntu-20.04
-    if: github.event_name == 'workflow_dispatch' || (github.event.pull_request.merged == true && contains(join(github.event.pull_request.labels.*.name, ', '), 'release-type'))
+    if: github.event_name == 'workflow_dispatch' || (github.event.pull_request.merged == true && contains(join(github.event.pull_request.labels.*.name, ', '), 'release'))
 
     steps:
       - name: Get input parameters
         run: |
-          echo "RELEASE_LABELS=${{ github.event.inputs.RELEASE_LABELS || join(github.event.pull_request.labels.*.name, ', ') }}" >> $GITHUB_ENV
           echo "BASELINE_BRANCH=${{ github.event.inputs.BASELINE || github.ref }}" >> $GITHUB_ENV
 
       - name: Checkout merge commit
