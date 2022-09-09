@@ -2,4 +2,4 @@
  * Public API Surface of ontimize-web-ngx-hello-world
  */
 
-export * from './lib/ontimize-web-ngx-hello-world.module';
+export * from './lib/ontimize-web-ngx-hello-worldd.module';
