@@ -46,16 +46,9 @@ jobs:
 
       - name: npm install and npm run build
         run: |
-          npm i  > stdout.log 2> error.log
-          npm run build > stdout.log 2> error.log
-
-          cat error.log
-          MESSAGE="The build process has failed with the following error:
-          \`\`\`
-          $(cat error.log)
-          \`\`\`
-          "
-          echo "FAILURE_MESSAGE=$MESSAGE" >> $GITHUB_ENV
+          echo "FAILURE_MESSAGE=The build process has failed" >> $GITHUB_ENV
+          npm i
+          npm run build
 
       - name: Add PR comment with release preview
         env:
