@@ -1,3 +1,11 @@
+## 2.1.0 (2022-10-24)
+### Added
+* Added feature 1
+* Added feature 2
+
+### Fixes
+* Solved problem X
+
 ## 2.0.1 (2022-09-12)
 ### Fixes
 * Solved problem with feature X
