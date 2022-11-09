@@ -1,3 +1,7 @@
+## 2.1.1 (2022-11-09)
+### Fixed
+* GitHub Actions workflow warnings because of NodeJS 12 actions
+
 ## 2.1.0 (2022-10-24)
 ### Added
 * Added feature 1
