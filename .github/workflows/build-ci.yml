@@ -1,8 +1,7 @@
 name: Build CI
 
 on:
-  pull_request:
-    types: [closed]
+  push:
     branches: [develop, hotfix/8.*]
     paths: ['projects/ontimize-web-ngx-hello-world/**']
   pull_request:
