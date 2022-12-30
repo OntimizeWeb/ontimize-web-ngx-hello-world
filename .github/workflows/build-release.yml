@@ -59,16 +59,16 @@ jobs:
           echo "Version ${{ steps.project.outputs.version }} is not a properly named for RELEASE"
           exit 1
 
-      - name: npm install and npm run build
-        run: |
-          npm i
-          npm run build
+      # - name: npm install and npm run build
+      #   run: |
+      #     npm i
+      #     npm run build
 
-      - name: Publish
-        run: |
-          cd dist
-          echo "//registry.npmjs.org/:_authToken=${{ secrets.OWEB_NPM_AUTOMATION_TOKEN }}" >> .npmrc
-          npm publish
+      # - name: Publish
+      #   run: |
+      #     cd dist
+      #     echo "//registry.npmjs.org/:_authToken=${{ secrets.OWEB_NPM_AUTOMATION_TOKEN }}" >> .npmrc
+      #     npm publish
 
       - name: GitHub Release / Create release
         uses:  ncipollo/release-action@2792aea87063cfd0d27953ac38e3ab45afacc154
