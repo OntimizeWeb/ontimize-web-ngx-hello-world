@@ -1,14 +1,14 @@
 name: Build CI
 
 on:
-  pull_request:
-    types: [closed]
+  push:
     branches: [develop, hotfix/8.*]
     paths: ['projects/ontimize-web-ngx-hello-world/**']
+  pull_request:
+    types: [opened, synchronize]
 
 jobs:
   build:
-    if: github.event_name == 'pull_request' && github.event.pull_request.merged == true
     runs-on: ubuntu-20.04
 
     steps:
@@ -27,6 +27,19 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 12.13.0
+
+      - name: obtain package.json version
+        id: project
+        run: |
+          echo "version=$(node -pe "require('./package.json')['version']")" >> "$GITHUB_OUTPUT"
+          echo "RELEASE_VERSION=$(node -pe "require('./package.json')['version']")" >> $GITHUB_ENV
+
+      - name: Debug
+        if: "contains(steps.project.outputs.version, 'SNAPSHOT')"
+        run: |
+          echo "FAILURE_MESSAGE=Your release version **is an SNAPSHOT and it needs to be fixed to make a release!**
+          The release version detected was: $RELEASE_VERSION" >> $GITHUB_ENV
+          exit 1
 
       - name: npm install and npm run build
         run: |
