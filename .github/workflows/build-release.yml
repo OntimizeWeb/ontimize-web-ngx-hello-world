@@ -89,7 +89,20 @@ jobs:
         run: |
           version=${{ steps.project.outputs.version }}
           git checkout -b sync/release-$version-to-develop
+
+      - name: Bump package.json version
+        run: |
+          version=${{ steps.project.outputs.version }}
           npm version $(npm version minor --no-git-tag-version)-SNAPSHOT-0 --no-git-tag-version
+
+      - name: Bump internal package.json version
+        run: |
+          version=${{ steps.project.outputs.version }}
+          cd projects/ontimize-web-ngx-hello-world
+          npm version $(npm version minor --no-git-tag-version)-SNAPSHOT-0 --no-git-tag-version
+
+      - name: Commit & Push changes
+        run: |
           git add .
           git commit --allow-empty -m "Prepare next development iteration"
           git push origin sync/release-$version-to-develop
