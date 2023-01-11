@@ -1,0 +1,16 @@
+---
+name: Send Release mail
+
+on:
+  release:
+    types: [released]
+
+
+jobs:
+  send-mail:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Echo
+        run: |
+          echo "${{ github.ref }}"
+
