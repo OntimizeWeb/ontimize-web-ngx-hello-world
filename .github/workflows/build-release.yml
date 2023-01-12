@@ -18,6 +18,7 @@ env:
   CI_EMAIL: ontimize-web@imatia.com
   CI_USERNAME: ontimize-web
   DEVELOP_BRANCH: develop
+  LIBRARY_PATH: projects/ontimize-web-ngx-hello-world
 
 jobs:
   build:
@@ -89,9 +90,16 @@ jobs:
         run: |
           version=${{ steps.project.outputs.version }}
           git checkout -b sync/release-$version-to-develop
+
+          echo "bumping package.json"
           npm version $(npm version minor --no-git-tag-version)-SNAPSHOT-0 --no-git-tag-version
+
+          echo "bumping $LIBRARY_PATH/package.json"
+          cd $LIBRARY_PATH
+          npm version $(npm version minor --no-git-tag-version)-SNAPSHOT-0 --no-git-tag-version
+
           git add .
-          git commit --allow-empty -m "Prepare next development iteration"
+          git commit -m "Prepare next development iteration"
           git push origin sync/release-$version-to-develop
 
       - name: Create pull request

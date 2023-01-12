@@ -1,3 +1,11 @@
+## 2.1.4 (2023-01-12)
+### Fixed
+* GitHub Actions release workflow
+
+## 2.1.3 (2023-01-11)
+### Added
+* GitHub Actions release workflow bumps all package.json versions after release
+
 ## 2.1.2 (2022-12-30)
 ### Fixed
 * GitHub Actions release workflow
