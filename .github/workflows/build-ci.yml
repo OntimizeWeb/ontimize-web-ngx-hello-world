@@ -1,14 +1,14 @@
 name: Build CI
 
 on:
-  pull_request:
-    types: [closed]
-    branches: [8.x.x, hotfix/8.*]
+  push:
+    branches: [develop, hotfix/8.*]
     paths: ['projects/ontimize-web-ngx-hello-world/**']
+  pull_request:
+    types: [opened, synchronize]
 
 jobs:
   build:
-    if: github.event_name == 'pull_request' && github.event.pull_request.merged == true
     runs-on: ubuntu-20.04
 
     steps:
