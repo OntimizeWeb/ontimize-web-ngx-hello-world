@@ -109,4 +109,9 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.OWEB_GH_TOKEN_PUSH }}
         run: |
           version=${{ steps.project.outputs.version }}
-          gh pr create -B ${{ env.DEVELOP_BRANCH }} -H sync/release-$version-to-develop --title "Sync release $version to develop" --body "Automated pull request for synchronizing released version into develop branch"
+          MESSAGE="
+          Automated pull request for synchronizing released version ($version) into develop branch
+
+          ### 💡 Merge Strategy: Create a merge commit
+          "
+          gh pr create -B ${{ env.DEVELOP_BRANCH }} -H sync/release-$version-to-develop --title "Sync release $version to develop" --body "$(echo -e "$MESSAGE")"
