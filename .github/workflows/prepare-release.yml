@@ -116,7 +116,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.OWEB_GH_TOKEN_PUSH }}
         run: |
           version=${{ env.RELEASE_VERSION }}
-          gh pr create -B ${{ env.MAIN_BRANCH }} -H release/$version --title "Release $version" --draft --label "release"
+          gh pr create -B ${{ env.MAIN_BRANCH }} -H release/$version --title "Release $version" --body "" --draft --label "release"
 
       - name: Create Hotfix pull request
         if: ${{ steps.parameters.outputs.isHotfix == true }}
@@ -124,5 +124,5 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.OWEB_GH_TOKEN_PUSH }}
         run: |
           version=${{ env.RELEASE_VERSION }}
-          gh pr create -B ${{ env.MAIN_BRANCH }} -H hotfix/$version --title "Hotfix $version" --draft --label "release"
+          gh pr create -B ${{ env.MAIN_BRANCH }} -H hotfix/$version --title "Hotfix $version" --body "" --draft --label "release"
 
