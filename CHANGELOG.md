@@ -1,3 +1,12 @@
+## 2.3.0 (2023-01-13)
+### Added
+* Added prepare release workflow
+* Testing minor release
+
+### Fixed
+* GitHub Actions release workflow
+
+
 ## 2.2.0 (2023-01-12)
 ### Added
 * Testing minor release
