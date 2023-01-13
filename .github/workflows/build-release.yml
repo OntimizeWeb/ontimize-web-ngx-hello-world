@@ -53,7 +53,7 @@ jobs:
       - name: obtain package.json version
         id: project
         run: |
-          echo ::set-output name=version::$(node -pe "require('./package.json')['version']")
+          echo "version=$(node -pe "require('./package.json')['version']")" >> $GITHUB_OUTPUT
 
       - name: abort if SNAPSHOT
         if: "contains(steps.project.outputs.version, 'SNAPSHOT')"
@@ -86,17 +86,19 @@ jobs:
           git config user.name "$CI_USERNAME"
           git config user.email "$CI_EMAIL"
 
+      - name: bumping version in package.json
+        run: |
+          npm version $(npm version minor --no-git-tag-version)-SNAPSHOT-0 --no-git-tag-version
+
+      - name: bumping version in internal package.json
+        working-directory: ${{ env.LIBRARY_PATH }}
+        run: |
+          npm version $(npm version minor --no-git-tag-version)-SNAPSHOT-0 --no-git-tag-version
+
       - name: Create sync branch
         run: |
           version=${{ steps.project.outputs.version }}
           git checkout -b sync/release-$version-to-develop
-
-          echo "bumping package.json"
-          npm version $(npm version minor --no-git-tag-version)-SNAPSHOT-0 --no-git-tag-version
-
-          echo "bumping $LIBRARY_PATH/package.json"
-          cd $LIBRARY_PATH
-          npm version $(npm version minor --no-git-tag-version)-SNAPSHOT-0 --no-git-tag-version
 
           git add .
           git commit -m "Prepare next development iteration"
