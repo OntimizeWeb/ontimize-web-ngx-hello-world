@@ -29,13 +29,12 @@ jobs:
       - name: Get input parameters
         id: parameters
         run: |
-          BASELINE_BRANCH=${{ env.DEVELOP_BRANCH }}
-          isHotfix=0
-
-          BRANCH=${{ github.event.inputs.BRANCH }}
-          if [ "$BRANCH" = "hotfix" ]; then
-          BASELINE_BRANCH=${{ env.MAIN_BRANCH }}
-          isHotfix=1
+          if [ "${{ github.event.inputs.BRANCH }}" = "hotfix" ]; then
+            BASELINE_BRANCH=${{ env.MAIN_BRANCH }}
+            isHotfix=1
+          else
+            BASELINE_BRANCH=${{ env.DEVELOP_BRANCH }}
+            isHotfix=0
           fi
           echo "BASELINE_BRANCH=$BASELINE_BRANCH" >> $GITHUB_ENV
           echo "isHotfix=$isHotfix" >> $GITHUB_OUTPUT
