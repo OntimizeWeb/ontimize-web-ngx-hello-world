@@ -29,7 +29,7 @@ jobs:
       - name: Get input parameters
         id: parameters
         run: |
-          if [ "${{ github.event.inputs.BRANCH }}" = "hotfix" ]; then
+          if [ "${{ github.event.inputs.RELEASE_TYPE }}" = "hotfix" ]; then
             BASELINE_BRANCH=${{ env.MAIN_BRANCH }}
             isHotfix=1
           else
