@@ -66,7 +66,8 @@ jobs:
       - name: bumping minor version in package.json
         if: ${{ steps.parameters.outputs.isHotfix == false }}
         run: |
-        version=${{ steps.project.outputs.version }} | sed 's/-SNAPSHOT-[0-9]//'
+        aux=${{ steps.project.outputs.version }}
+        version=$aux | sed 's/-SNAPSHOT-[0-9]//'
         npm version $version --no-git-tag-version
         echo "RELEASE_VERSION=$(node -pe "require('./package.json')['version']")" >> $GITHUB_ENV
 
@@ -74,7 +75,8 @@ jobs:
         if: ${{ steps.parameters.outputs.isHotfix == false }}
         working-directory: ${{ env.LIBRARY_PATH }}
         run: |
-        version=${{ steps.project.outputs.version }} | sed 's/-SNAPSHOT-[0-9]//'
+        aux=${{ steps.project.outputs.version }}
+        version=$aux | sed 's/-SNAPSHOT-[0-9]//'
         npm version $version --no-git-tag-version
 
       ## HOTFIX
