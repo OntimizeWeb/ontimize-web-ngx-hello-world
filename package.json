@@ -1,6 +1,6 @@
 {
   "name": "ontimize-web-ngx-hello-world",
-  "version": "2.4.0",
+  "version": "2.4.1",
   "description": "Hello World application",
   "scripts": {
     "ng": "ng",
