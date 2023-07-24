@@ -57,7 +57,7 @@ jobs:
         if: ${{ steps.parameters.outputs.isRC == true }}
         id: release-candidate
         run: |
-          versionNumber=${{ github.event.inputs.RELEASE_CANDIDATE_VERSION
+          versionNumber=${{ github.event.inputs.RELEASE_CANDIDATE_VERSION}}
           if [[ $versionNumber =~ ^[0-9]+\.[0-9]+\.[0-9]+\-rc\.[0-9]+ ]]; then
             echo "version=${BASH_REMATCH[0]}" >> $GITHUB_OUTPUT
           else
