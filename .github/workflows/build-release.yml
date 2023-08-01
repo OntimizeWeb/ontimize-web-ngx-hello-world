@@ -90,6 +90,7 @@ jobs:
       #     npm publish
 
       - name: GitHub Release / Create release
+        if: ${{ steps.release-candidate.outputs.isRC == false }}
         uses:  ncipollo/release-action@2792aea87063cfd0d27953ac38e3ab45afacc154
         with:
           tag: ${{ steps.project.outputs.version }}
@@ -98,7 +99,7 @@ jobs:
           body: |
             Check out the [changelog](CHANGELOG.md) for version ${{ steps.project.outputs.version }}
 
-      - name: GitHub Release / Create release
+      - name: GitHub Release / Create release candidate
         if: ${{ steps.release-candidate.outputs.isRC == true }}
         uses:  ncipollo/release-action@2792aea87063cfd0d27953ac38e3ab45afacc154
         with:
