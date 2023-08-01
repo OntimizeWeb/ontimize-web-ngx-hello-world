@@ -55,16 +55,33 @@ jobs:
         run: |
           echo "version=$(node -pe "require('./package.json')['version']")" >> $GITHUB_OUTPUT
 
+      - name: Check release candidate
+        id: release-candidate
+        run: |
+          versionNumber=${{ steps.project.outputs.version }}
+          if [[ $versionNumber =~ ^[0-9]+\.[0-9]+\.[0-9]+\-rc\.[0-9]+ ]]; then
+            isRC=1
+          else
+            isRC=0
+          fi
+          echo "isRC=$isRC" >> $GITHUB_OUTPUT
+
       - name: abort if SNAPSHOT
         if: "contains(steps.project.outputs.version, 'SNAPSHOT')"
         run: |
           echo "Version ${{ steps.project.outputs.version }} is not a properly named for RELEASE"
           exit 1
 
-      # - name: npm install and npm run build
-      #   run: |
-      #     npm i
-      #     npm run build
+      - name: npm install and npm run build
+        run: |
+          npm i
+          npm run build
+
+      - name: npm package
+        if: ${{ steps.release-candidate.outputs.isRC == true }}
+        run: |
+          cd dist
+          npm pack
 
       # - name: Publish
       #   run: |
@@ -78,6 +95,18 @@ jobs:
           tag: ${{ steps.project.outputs.version }}
           name: ${{ steps.project.outputs.version }}
           token: ${{ secrets.OWEB_GH_TOKEN_PUSH }}
+          body: |
+            Check out the [changelog](CHANGELOG.md) for version ${{ steps.project.outputs.version }}
+
+      - name: GitHub Release / Create release
+        if: ${{ steps.release-candidate.outputs.isRC == true }}
+        uses:  ncipollo/release-action@2792aea87063cfd0d27953ac38e3ab45afacc154
+        with:
+          tag: ${{ steps.project.outputs.version }}
+          name: ${{ steps.project.outputs.version }}
+          token: ${{ secrets.OWEB_GH_TOKEN_PUSH }}
+          artifacts: |
+            dist/ontimize-web-ngx-hello-world-${{ steps.project.outputs.version }}.tgz
           body: |
             Check out the [changelog](CHANGELOG.md) for version ${{ steps.project.outputs.version }}
 
