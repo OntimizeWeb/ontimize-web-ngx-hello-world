@@ -24,12 +24,7 @@ jobs:
       - name: publish
         working-directory: dist
         run: |
-          echo "//npm.pkg.github.com/:_authToken=${NODE_AUTH_TOKEN}" >> .npmrc
-          echo "@OntimizeWeb:registry=https://npm.pkg.github.com" >> .npmrc
-          echo "always-auth=true" >> .npmrc
-          npm config list
-          ls -l -a
-          cat .npmrc
+          npm login --registry=https://npm.pkg.github.com --scope=@OntimizeWeb
           npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.OWEB_NPM_AUTOMATION_TOKEN }}
