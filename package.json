@@ -1,5 +1,5 @@
 {
-  "name": "ontimize-web-ngx-hello-world",
+  "name": "@OntimizeWeb/ontimize-web-ngx-hello-world",
   "version": "2.0.0-SNAPSHOT-0",
   "description": "Hello World application",
   "scripts": {
