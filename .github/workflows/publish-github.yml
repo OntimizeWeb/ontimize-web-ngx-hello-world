@@ -21,8 +21,10 @@ jobs:
       - run: | 
           npm i
           npm run build
-      - run: |
-          cd dist
+      - name: publish
+        working-directory: dist
+        run: |
+          cp /home/runner/work/_temp/.npmrc .npmrc
           npm config list
           ls -l -a
           npm publish
