@@ -29,5 +29,6 @@ jobs:
           echo "@OntimizeWeb:registry=\"https://npm.pkg.github.com/\"" >> .npmrc
           echo "//npm.pkg.github.com/:_authToken=${{ secrets.OWEB_NPM_AUTOMATION_TOKEN }}" >> .npmrc
           echo "always-auth=true" >> .npmrc
-          npm config list
+          npm config ls -l
           cat .npmrc
+          npm publish
