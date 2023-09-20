@@ -16,7 +16,7 @@ jobs:
           node-version: "18.10.0"
           registry-url: "https://npm.pkg.github.com"
           # Defaults to the user or organization that owns the workflow file
-          scope: "@ontimize-web"
+          scope: "@OntimizeWeb"
           always-auth: true
       - run: |
           npm i
@@ -24,6 +24,11 @@ jobs:
       - name: publish
         working-directory: dist
         run: |
-          npm publish --@ontimize-web:registry=https://npm.pkg.github.com/
+          cp /home/runner/work/_temp/.npmrc .npmrc
+          echo "@OntimizeWeb:registry=https://npm.pkg.github.com" >> .npmrc
+          npm config list
+          ls -l
+          cat .npmrc
+          npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.OWEB_NPM_AUTOMATION_TOKEN }}
