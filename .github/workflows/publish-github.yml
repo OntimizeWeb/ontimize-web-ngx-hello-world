@@ -23,8 +23,8 @@ jobs:
           npm run build
       - name: publish
         working-directory: dist
-        run: |
-          npm login --registry=https://npm.pkg.github.com --scope=@OntimizeWeb
-          npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.OWEB_NPM_AUTOMATION_TOKEN }}
+        run: |
+          npm config list
+          cat /home/runner/work/_temp/.npmrc
