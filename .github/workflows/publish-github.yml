@@ -13,10 +13,10 @@ jobs:
       # Setup .npmrc file to publish to GitHub Packages
       - uses: actions/setup-node@v3
         with:
-          node-version: "18.10.0"
-          registry-url: "https://npm.pkg.github.com"
+          node-version: 12.13.0
+          #registry-url: "https://npm.pkg.github.com"
           # Defaults to the user or organization that owns the workflow file
-          scope: "@OntimizeWeb"
+          #scope: "@OntimizeWeb"
           always-auth: true
       - run: |
           npm i
@@ -26,5 +26,8 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.OWEB_NPM_AUTOMATION_TOKEN }}
         run: |
+          echo "@OntimizeWeb:registry=\"https://npm.pkg.github.com/\"" >> .npmrc
+          echo "//npm.pkg.github.com/:_authToken=${{ secrets.OWEB_NPM_AUTOMATION_TOKEN }}" >> .npmrc
+          echo "always-auth=true" >> .npmrc
           npm config list
           cat /home/runner/work/_temp/.npmrc
