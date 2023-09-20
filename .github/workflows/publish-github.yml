@@ -22,6 +22,6 @@ jobs:
           npm run build
       - run: |
           cd dist
-          npm publish
+          npm config list
         env:
           NODE_AUTH_TOKEN: ${{ secrets.OWEB_NPM_AUTOMATION_TOKEN }}
