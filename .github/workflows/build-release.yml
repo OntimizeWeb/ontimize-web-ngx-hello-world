@@ -93,7 +93,7 @@ jobs:
         if: ${{ steps.release-candidate.outputs.isRC == false }}
         uses: ncipollo/release-action@2792aea87063cfd0d27953ac38e3ab45afacc154
         with:
-          commit: main
+          commit: ${{ env.BASELINE_BRANCH }}
           tag: ${{ steps.project.outputs.version }}
           name: ${{ steps.project.outputs.version }}
           token: ${{ secrets.OWEB_GH_TOKEN_PUSH }}
@@ -104,7 +104,7 @@ jobs:
         if: ${{ steps.release-candidate.outputs.isRC == true }}
         uses: ncipollo/release-action@2792aea87063cfd0d27953ac38e3ab45afacc154
         with:
-          commit: main
+          commit: ${{ env.BASELINE_BRANCH }}
           tag: ${{ steps.project.outputs.version }}
           name: ${{ steps.project.outputs.version }}
           token: ${{ secrets.OWEB_GH_TOKEN_PUSH }}
