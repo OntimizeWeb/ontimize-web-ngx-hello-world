@@ -1,6 +1,6 @@
 {
   "name": "ontimize-web-ngx-hello-world",
-  "version": "2.6.0",
+  "version": "2.7.0-SNAPSHOT-0",
   "peerDependencies": {
     "@angular/common": "^8.2.14",
     "@angular/core": "^8.2.14"
