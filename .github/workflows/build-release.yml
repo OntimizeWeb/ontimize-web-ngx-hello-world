@@ -5,13 +5,13 @@ on:
   pull_request:
     types: [closed]
     branches: [main]
-    paths: ['projects/ontimize-web-ngx-hello-world/**']
+    paths: ["projects/ontimize-web-ngx-hello-world/**"]
   workflow_dispatch:
     inputs:
       BASELINE:
-        description: 'Release branch'
+        description: "Release branch"
         required: true
-        default: 'main'
+        default: "main"
 
 env:
   NPM_REGISTRY: https://registry.npmjs.org/
@@ -36,7 +36,7 @@ jobs:
           ref: ${{ env.BASELINE_BRANCH }}
           fetch-depth: 0
 
-      - name: 'Cache node modules'
+      - name: "Cache node modules"
         uses: actions/cache@v3
         with:
           path: ~/.npm
@@ -91,8 +91,9 @@ jobs:
 
       - name: GitHub Release / Create release
         if: ${{ steps.release-candidate.outputs.isRC == false }}
-        uses:  ncipollo/release-action@2792aea87063cfd0d27953ac38e3ab45afacc154
+        uses: ncipollo/release-action@2792aea87063cfd0d27953ac38e3ab45afacc154
         with:
+          commit: main
           tag: ${{ steps.project.outputs.version }}
           name: ${{ steps.project.outputs.version }}
           token: ${{ secrets.OWEB_GH_TOKEN_PUSH }}
@@ -101,8 +102,9 @@ jobs:
 
       - name: GitHub Release / Create release candidate
         if: ${{ steps.release-candidate.outputs.isRC == true }}
-        uses:  ncipollo/release-action@2792aea87063cfd0d27953ac38e3ab45afacc154
+        uses: ncipollo/release-action@2792aea87063cfd0d27953ac38e3ab45afacc154
         with:
+          commit: main
           tag: ${{ steps.project.outputs.version }}
           name: ${{ steps.project.outputs.version }}
           token: ${{ secrets.OWEB_GH_TOKEN_PUSH }}
