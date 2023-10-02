@@ -1,0 +1,30 @@
+name: Publish package to GitHub Packages
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+      # Setup .npmrc file to publish to GitHub Packages
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '18.10.0'
+          registry-url: 'https://npm.pkg.github.com'
+          # Defaults to the user or organization that owns the workflow file
+          scope: '@OntimizeWeb'
+          always-auth: true
+      - run: | 
+          npm i
+          npm run build
+      - name: publish
+        working-directory: dist
+        run: |
+          echo "//npm.pkg.github.com/:_authToken=${{ secrets.OWEB_NPM_AUTOMATION_TOKEN }}" >> .npmrc
+          npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.OWEB_NPM_AUTOMATION_TOKEN }}
