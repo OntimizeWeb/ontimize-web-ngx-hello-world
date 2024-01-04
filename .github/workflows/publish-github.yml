@@ -14,23 +14,16 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 12.13.0
-          #registry-url: "https://npm.pkg.github.com"
+          registry-url: "https://npm.pkg.github.com"
           # Defaults to the user or organization that owns the workflow file
-          #scope: "@OntimizeWeb"
+          scope: "@OntimizeWeb"
           always-auth: true
       - run: |
           npm i
           npm run build
       - name: publish
-        working-directory: dist
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.OWEB_NPM_AUTOMATION_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.OWEB_GH_TOKEN_PUSH }}
         run: |
-          echo "registry=\"https://npm.pkg.github.com/\"" >> .npmrc
-          echo "@OntimizeWeb:registry=\"https://npm.pkg.github.com/\"" >> .npmrc
-          echo "//npm.pkg.github.com/:_authToken=${{ secrets.OWEB_NPM_AUTOMATION_TOKEN }}" >> .npmrc
-          echo "//@OntimizeWeb:npm.pkg.github.com/:_authToken=${{ secrets.OWEB_NPM_AUTOMATION_TOKEN }}" >> .npmrc
-          echo "always-auth=true" >> .npmrc
-          npm config ls -l
           cat .npmrc
-          npm publish
+          npm publish dist/
