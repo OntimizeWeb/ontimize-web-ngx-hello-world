@@ -33,5 +33,4 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.OWEB_GH_TOKEN_PUSH }}
         run: |
-          cd dist
-          npm publish
+          npm publish dist/
