@@ -32,6 +32,6 @@ jobs:
       - name: publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.OWEB_GH_TOKEN_PUSH }}
-        # npm publish dist/
         run: |
-          cat dist/package.json
+          cd dist
+          npm publish
