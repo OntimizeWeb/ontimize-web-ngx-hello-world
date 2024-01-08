@@ -21,8 +21,10 @@ jobs:
       - name: install
         run: |
           npm i
-      - name: Update package.json name
-        run: sed -i '2,2s/ontimize-web-ngx-hello-world/@OntimizeWeb\/ontimize-web-ngx-hello-world/g' package.json
+      - name: Update package.json names
+        run: |
+          sed -i '2,2s/ontimize-web-ngx-hello-world/@OntimizeWeb\/ontimize-web-ngx-hello-world/g' package.json
+          sed -i '2,2s/ontimize-web-ngx-hello-world/@OntimizeWeb\/ontimize-web-ngx-hello-world/g' projects/ontimize-web-ngx-hello-world/package.json
       - run: echo registry=https://npm.pkg.github.com/OntimizeWeb >> .npmrc
       - name: build
         run: |
