@@ -14,12 +14,18 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 12.13.0
-          registry-url: "https://npm.pkg.github.com"
+          registry-url: https://npm.pkg.github.com/
           # Defaults to the user or organization that owns the workflow file
           scope: "@OntimizeWeb"
           always-auth: true
-      - run: |
+      - name: install
+        run: |
           npm i
+      - name: Update package.json name
+        run: sed -i '2,2s/ontimize-web-ngx-hello-world/@OntimizeWeb\/ontimize-web-ngx-hello-world/g' package.json
+      - run: echo registry=https://npm.pkg.github.com/OntimizeWeb >> .npmrc
+      - name: build
+        run: |
           npm run build
       - name: publish
         env:
