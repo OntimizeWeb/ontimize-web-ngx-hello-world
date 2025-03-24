@@ -55,7 +55,7 @@ jobs:
           echo "version=$VERSION" >> $GITHUB_OUTPUT
 
       - name: abort if already published
-        if: "steps.next.output.version == steps.project.outputs.version"
+        if: "steps.next.outputs.version == steps.project.outputs.version"
         run: |
           echo "Version ${{ steps.project.outputs.version }} is already published"
           exit 1
