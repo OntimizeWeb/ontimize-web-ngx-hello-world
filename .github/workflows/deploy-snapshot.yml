@@ -51,7 +51,7 @@ jobs:
           echo ::set-output name=published-version::$(npm view ontimimize-web-ngx-hello-world@next version)
 
       - name: abort if already published
-        if: "steps.next-published.output.published-version === steps.project.outputs.version"
+        if: "steps.next-published.output.published-version == steps.project.outputs.version"
         run: |
           echo "Version ${{ steps.project.outputs.version }} is already published"
           exit 1
