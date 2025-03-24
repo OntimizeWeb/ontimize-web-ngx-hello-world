@@ -46,12 +46,14 @@ jobs:
           exit 1
       
       - name: obtain last NEXT published version
-        id: next-published
+        id: next
         run: |
-          echo "published-version=$(npm view ontimize-web-ngx-hello-world@next version)" >> $GITHUB_OUTPUT
+          VERSION=$(npm view ontimize-web-ngx-hello-world@next version)
+          echo $VERSION
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
 
       - name: abort if already published
-        if: "steps.next-published.output.published-version == steps.project.outputs.version"
+        if: "steps.next.output.version == steps.project.outputs.version"
         run: |
           echo "Version ${{ steps.project.outputs.version }} is already published"
           exit 1
