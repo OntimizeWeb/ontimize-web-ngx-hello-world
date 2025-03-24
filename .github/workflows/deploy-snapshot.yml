@@ -37,7 +37,9 @@ jobs:
       - name: obtain package.json version
         id: project
         run: |
-          echo "version=$(node -pe "require('./package.json')['version']")" >> $GITHUB_OUTPUT
+          VERSION=$(node -pe "require('./package.json')['version']")
+          echo $VERSION
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
 
       - name: abort if not NEXT
         if: "!contains(steps.project.outputs.version, 'next')"
